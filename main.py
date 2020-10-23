@@ -1,6 +1,7 @@
 import socket
 import threading
 import time
+import subprocess
 
 port = 9998
 host = ""
@@ -16,8 +17,12 @@ def handle(client_sock):
 
 
 def handlesend(client_sock):
-    while True:
-        client_sock.send(input(">").encode())
+    try:
+        while True:
+            client_sock.send(input().encode())
+    except ConnectionAbortedError:
+        print("Could not connect to host")
+
 
 def handlerecv(client_sock):
     try:
