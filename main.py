@@ -1,5 +1,6 @@
 import socket
 import threading
+from ClientObject import ClientObject
 import time
 import subprocess
 
@@ -8,28 +9,6 @@ host = ""
 
 
 # limit ip, blank means anything
-
-def handle(client_sock):
-    recvthread = threading.Thread(target=handlesend, args=(client_sock,))
-    sendthread = threading.Thread(target=handlerecv, args=(client_sock,))
-    sendthread.start()
-    recvthread.start()
-
-
-def handlesend(client_sock):
-    try:
-        while True:
-            client_sock.send(input().encode())
-    except ConnectionAbortedError:
-        print("Could not connect to host")
-
-
-def handlerecv(client_sock):
-    try:
-        while True:
-            print(client_sock.recv(1024).decode(), end="")
-    except ConnectionAbortedError:
-        print("Client has closed connection")
 
 
 def main():
@@ -43,7 +22,7 @@ def main():
     while True:
         (client_sock, addr) = server_sock.accept()
         # blocking method
-        thread = threading.Thread(target=handle, args=(client_sock,))
+        thread = threading.Thread(target=ClientObject, args=(client_sock,))
         thread.start()
 
 
